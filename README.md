@@ -62,7 +62,7 @@ airflow-course/
 
 ### 3. 启动平台
 ```powershell
-cd D:\DoubaoWork\airflow-course
+cd D:\airflow-course
 ./scripts/start.ps1
 ```
 - Airflow UI：<http://localhost:18080> （airflow / airflow）

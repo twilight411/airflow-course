@@ -5,6 +5,7 @@
 >
 > 运行环境：Windows 11 + Docker Desktop 4.38（Docker Compose v2.32）+ Apache Airflow 3.3.2；
 > LLM：DeepSeek（OpenAI 兼容协议）；邮件：SMTP（QQ/163/Gmail 均可），支持 DRY_RUN 离线演示。
+> 公开仓库：https://github.com/twilight411/airflow-course
 
 ---
 

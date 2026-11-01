@@ -4,7 +4,7 @@
 
 ## 0. 开场（0:00–0:45）
 
-【画面】打开项目根目录 `D:\DoubaoWork\airflow-course`，依次展开 `dags/`、`skills/`、`llm_bridge/`、`docs/`。
+【画面】打开项目根目录，依次展开 `dags/`、`skills/`、`llm_bridge/`、`docs/`。
 
 【口播】
 “老师好，这次课程作业我完成了三部分：第一，基于 Apache Airflow 3.3.2，用 Docker Compose

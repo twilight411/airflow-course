@@ -1,7 +1,7 @@
 # 运行验证报告（录屏前自查留档）
 
 > 验证时间：2026-11-01（北京时间）
-> 工程路径：`D:\DoubaoWork\airflow-course`
+> 工程路径：本地项目根目录（机器绝对路径不写入仓库说明）
 > 运行形态：Docker Compose + CeleryExecutor，Apache Airflow 3.3.2；LLM 网关运行在宿主机，仅使用 Python 标准库。
 
 ## 1. 环境基线
@@ -164,7 +164,7 @@ SkillNotFoundError: 未注册的 Skill: 'not_registered_skill'；可选: ['archi
 正式录屏前执行：
 
 ```powershell
-cd D:\DoubaoWork\airflow-course
+# 在项目根目录执行
 ./scripts/reset.ps1
 ./scripts/start.ps1
 ```

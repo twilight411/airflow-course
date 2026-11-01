@@ -62,7 +62,7 @@ airflow-course/
 ### 3. 启动平台
 
 ```powershell
-cd D:\airflow-course
+# 进入项目根目录后执行
 ./scripts/start.ps1
 ```
 

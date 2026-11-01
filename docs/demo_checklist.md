@@ -1,6 +1,6 @@
 # 录屏演示清单（按顺序操作，每一步对应口播稿段落）
 
-> 环境前置：Docker Desktop 已启动；`D:\DoubaoWork\airflow-course`；已执行 `./scripts/start.ps1`。
+> 环境前置：Docker Desktop 已启动；项目根目录已打开；已执行 `./scripts/start.ps1`。
 > 建议录屏工具：OBS / Win11 自带 Xbox Game Bar（Win+G），浏览器固定 125% 缩放，关闭无关弹窗。
 
 ## 阶段 0：开场（0.5 分钟）

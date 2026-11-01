@@ -1,0 +1,6 @@
+test_email_skill.py 全部通过
+test_archiver_record_match.py 全部通过
+test_status_snapshot_merge.py 全部通过
+test_rule_parser.py 全部通过
+test_registry_consistency.py 全部通过
+test_failure_summary.py 全部通过

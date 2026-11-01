@@ -1,0 +1,20 @@
+2026-11-01 19:13:25,021 [bridge.airflow_client] INFO Airflow JWT Token 已获取
+2026-11-01 19:13:25,135 [bridge.airflow_client] INFO 已触发 DAG llm_skill_dispatch, run_id=manual__2026-11-01T11:13:25.098891+00:00
+2026-11-01 19:13:25,136 [bridge.orchestrator] INFO DAG Run 已触发: llm_skill_dispatch/manual__2026-11-01T11:13:25.098891+00:00
+2026-11-01 19:13:25,182 [bridge.airflow_client] INFO DAG Run 状态: queued
+2026-11-01 19:13:28,212 [bridge.airflow_client] INFO DAG Run 状态: success
+
+========================================================================
+【需求】调用 send_email Skill 给 ops@example.com 发一条网关在线联调通知
+------------------------------------------------------------------------
+意图来源: deepseek    置信度: 0.9
+目标 DAG: llm_skill_dispatch
+选择理由: 用户明确要求调用 send_email Skill 发送通知，属于通用 Skill 调度场景，因此选择 llm_skill_dispatch 并指定 skill=send_email。
+调度参数: {"skill": "send_email", "payload": {}, "conf": {"to": "ops@example.com", "subject": "网关在线联调通知", "text_body": "网关在线联调通知"}}
+
+DAG Run : manual__2026-11-01T11:13:25.098891+00:00
+最终状态: ✅ success
+任务状态:
+  ✅ route_execute            success
+耗时: 4.54s
+========================================================================

@@ -1,0 +1,25 @@
+2026-11-01 19:12:08,279 [bridge.airflow_client] INFO Airflow JWT Token 已获取
+2026-11-01 19:12:08,452 [bridge.airflow_client] INFO 已触发 DAG email_daily_report, run_id=manual__2026-11-01T11:12:08.379078+00:00
+2026-11-01 19:12:08,453 [bridge.orchestrator] INFO DAG Run 已触发: email_daily_report/manual__2026-11-01T11:12:08.379078+00:00
+2026-11-01 19:12:08,500 [bridge.airflow_client] INFO DAG Run 状态: queued
+2026-11-01 19:12:11,526 [bridge.airflow_client] INFO DAG Run 状态: running
+2026-11-01 19:12:14,552 [bridge.airflow_client] INFO DAG Run 状态: success
+
+========================================================================
+【需求】给 zhang@whu.edu.cn 张老师发一封项目进度汇报邮件，主题是 Airflow 课程作业进展
+------------------------------------------------------------------------
+意图来源: deepseek    置信度: 0.95
+目标 DAG: email_daily_report
+选择理由: 用户需求是向指定收件人发送一封项目进度汇报邮件，属于邮件汇报类需求，直接匹配 email_daily_report。
+调度参数: {"to": "zhang@whu.edu.cn", "recipient_name": "张老师", "subject": "Airflow 课程作业进展"}
+
+DAG Run : manual__2026-11-01T11:12:08.379078+00:00
+最终状态: ✅ success
+任务状态:
+  ✅ prepare_report_data      success
+  ✅ render_email_draft       success
+  ✅ send_report_email        success
+  ✅ archive_and_verify       success
+  ✅ final_summary            success
+耗时: 7.77s
+========================================================================

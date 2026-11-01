@@ -1,0 +1,22 @@
+# ---- Airflow 运行产物 ----
+logs/*
+!logs/.gitkeep
+output/*
+!output/.gitkeep
+config/airflow.cfg
+config/*.local.cfg
+
+# ---- 密钥：.env 不入库，仅提交 .env.example ----
+.env
+llm_bridge/.env
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ---- 系统/编辑器 ----
+.DS_Store
+.idea/
+.vscode/

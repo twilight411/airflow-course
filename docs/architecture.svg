@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1120" viewBox="0 0 1400 1120" font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif">
+  <title>Airflow 课程实践工程总体架构示意图</title>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#444"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2b6cb0"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2f855a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="1120" fill="#ffffff"/>
+
+  <!-- 标题 -->
+  <text x="40" y="42" font-size="26" font-weight="700" fill="#1a202c">Airflow + Skill + DeepSeek 自然语言编排工程 · 总体架构（示意）</text>
+  <text x="1060" y="42" font-size="14" fill="#718096">Airflow 3.3.2 · CeleryExecutor</text>
+
+  <!-- ============ 区域一：宿主机 ============ -->
+  <rect x="40" y="70" width="1320" height="250" rx="14" fill="#eef5ff" stroke="#9cc3f0" stroke-width="1.5"/>
+  <text x="60" y="102" font-size="17" font-weight="700" fill="#2b6cb0">宿主机 Windows 11（Docker Desktop 之外运行的浏览器与 LLM 网关进程）</text>
+
+  <!-- 浏览器 -->
+  <rect x="70" y="135" width="250" height="125" rx="10" fill="#ffffff" stroke="#2b6cb0" stroke-width="1.5"/>
+  <text x="195" y="170" font-size="16" font-weight="700" text-anchor="middle" fill="#1a202c">Web 浏览器</text>
+  <text x="195" y="200" font-size="13" text-anchor="middle" fill="#2d3748">http://localhost:18080</text>
+  <text x="195" y="224" font-size="13" text-anchor="middle" fill="#2d3748">Web UI · 账号 airflow / airflow</text>
+  <text x="195" y="248" font-size="12" text-anchor="middle" fill="#718096">Grid / Graph / Logs / XCom 监控</text>
+
+  <!-- 网关面板 -->
+  <rect x="380" y="125" width="950" height="155" rx="10" fill="#ffffff" stroke="#2b6cb0" stroke-width="1.5"/>
+  <text x="400" y="153" font-size="16" font-weight="700" fill="#2b6cb0">LLM 自然语言网关 llm_bridge（纯 Python 标准库 urllib/smtplib，宿主机免装第三方包）</text>
+
+  <!-- 网关五层 -->
+  <rect x="400" y="175" width="160" height="78" rx="8" fill="#ebf8ff" stroke="#63b3ed"/>
+  <text x="480" y="205" font-size="14" font-weight="700" text-anchor="middle">CLI 对话入口</text>
+  <text x="480" y="230" font-size="12" text-anchor="middle" fill="#4a5568">--once；--no-llm 兜底</text>
+
+  <rect x="590" y="175" width="175" height="78" rx="8" fill="#ebf8ff" stroke="#63b3ed"/>
+  <text x="677" y="200" font-size="14" font-weight="700" text-anchor="middle">IntentParser</text>
+  <text x="677" y="222" font-size="12" text-anchor="middle" fill="#4a5568">DeepSeek 优先（强制 JSON）</text>
+  <text x="677" y="242" font-size="12" text-anchor="middle" fill="#4a5568">规则引擎兜底离线可用</text>
+
+  <rect x="795" y="175" width="175" height="78" rx="8" fill="#ebf8ff" stroke="#63b3ed"/>
+  <text x="882" y="200" font-size="14" font-weight="700" text-anchor="middle">注册表校验</text>
+  <text x="882" y="222" font-size="12" text-anchor="middle" fill="#4a5568">intent_registry.json</text>
+  <text x="882" y="242" font-size="12" text-anchor="middle" fill="#4a5568">白名单约束，防幻觉路由</text>
+
+  <rect x="995" y="175" width="155" height="78" rx="8" fill="#ebf8ff" stroke="#63b3ed"/>
+  <text x="1072" y="205" font-size="14" font-weight="700" text-anchor="middle">Orchestrator</text>
+  <text x="1072" y="230" font-size="12" text-anchor="middle" fill="#4a5568">编排 · 轮询 · 异常汇总</text>
+
+  <rect x="1180" y="175" width="135" height="78" rx="8" fill="#ebf8ff" stroke="#63b3ed"/>
+  <text x="1247" y="200" font-size="14" font-weight="700" text-anchor="middle">REST 客户端</text>
+  <text x="1247" y="222" font-size="12" text-anchor="middle" fill="#4a5568">JWT 认证 / 触发 Run</text>
+  <text x="1247" y="242" font-size="12" text-anchor="middle" fill="#4a5568">轮询终态 / 拉日志</text>
+
+  <line x1="560" y1="214" x2="588" y2="214" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="765" y1="214" x2="793" y2="214" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="970" y1="214" x2="993" y2="214" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1150" y1="214" x2="1178" y2="214" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <text x="400" y="312" font-size="12.5" fill="#4a5568">降级策略：Key 失效 / 大模型超时 / 输出非法 → 自动切换中文规则引擎；规则未匹配到注册能力 → 直接拒绝触发，不发起 REST 请求。</text>
+
+  <!-- ============ 区域二：Docker Compose 内部网络 ============ -->
+  <rect x="40" y="345" width="1320" height="390" rx="14" fill="#f1f9f1" stroke="#9fd6a3" stroke-width="1.5"/>
+  <text x="60" y="377" font-size="17" font-weight="700" fill="#2f855a">Docker Compose 内部网络：调度组件（读写元数据库，通过 Redis 分发任务消息）</text>
+
+  <!-- 调度组件行 -->
+  <rect x="80" y="400" width="250" height="95" rx="10" fill="#ffffff" stroke="#2f855a" stroke-width="1.5"/>
+  <text x="205" y="432" font-size="15" font-weight="700" text-anchor="middle">airflow-apiserver</text>
+  <text x="205" y="458" font-size="12.5" text-anchor="middle" fill="#4a5568">Web UI + REST API</text>
+  <text x="205" y="480" font-size="12" text-anchor="middle" fill="#718096">宿主机 18080 → 容器 8080</text>
+
+  <rect x="380" y="400" width="200" height="95" rx="10" fill="#ffffff" stroke="#2f855a" stroke-width="1.5"/>
+  <text x="480" y="432" font-size="15" font-weight="700" text-anchor="middle">airflow-scheduler</text>
+  <text x="480" y="458" font-size="12.5" text-anchor="middle" fill="#4a5568">扫描 DAG / 判断依赖</text>
+  <text x="480" y="480" font-size="12.5" text-anchor="middle" fill="#4a5568">与调度时间并分发任务</text>
+
+  <rect x="620" y="400" width="200" height="95" rx="10" fill="#ffffff" stroke="#2f855a" stroke-width="1.5"/>
+  <text x="720" y="432" font-size="15" font-weight="700" text-anchor="middle">airflow-dag-processor</text>
+  <text x="720" y="458" font-size="12.5" text-anchor="middle" fill="#4a5568">解析 dags/ Python 文件</text>
+  <text x="720" y="480" font-size="12.5" text-anchor="middle" fill="#4a5568">生成 DAG 结构写入元数据库</text>
+
+  <rect x="860" y="400" width="190" height="95" rx="10" fill="#ffffff" stroke="#2f855a" stroke-width="1.5"/>
+  <text x="955" y="432" font-size="15" font-weight="700" text-anchor="middle">airflow-triggerer</text>
+  <text x="955" y="458" font-size="12.5" text-anchor="middle" fill="#4a5568">deferrable 事件循环</text>
+  <text x="955" y="480" font-size="12.5" text-anchor="middle" fill="#4a5568">事件就绪后唤醒 Worker</text>
+
+  <rect x="1100" y="400" width="230" height="95" rx="10" fill="#ffffff" stroke="#2f855a" stroke-width="1.5"/>
+  <text x="1215" y="432" font-size="15" font-weight="700" text-anchor="middle">airflow-worker（Celery）</text>
+  <text x="1215" y="458" font-size="12.5" text-anchor="middle" fill="#4a5568">从 Broker 拉取任务消息</text>
+  <text x="1215" y="480" font-size="12.5" text-anchor="middle" fill="#4a5568">执行 PythonOperator 与 Skill</text>
+
+  <!-- 持久化与监控行 -->
+  <rect x="230" y="560" width="300" height="85" rx="10" fill="#f7fafc" stroke="#718096" stroke-width="1.5"/>
+  <text x="380" y="592" font-size="15" font-weight="700" text-anchor="middle">postgres:16 元数据库</text>
+  <text x="380" y="618" font-size="12.5" text-anchor="middle" fill="#4a5568">DAG 定义 · 任务实例状态 · XCom</text>
+  <text x="380" y="638" font-size="12" text-anchor="middle" fill="#718096">变量 · 连接 · 审计记录 · Celery 结果后端</text>
+
+  <rect x="610" y="560" width="260" height="85" rx="10" fill="#f7fafc" stroke="#718096" stroke-width="1.5"/>
+  <text x="740" y="592" font-size="15" font-weight="700" text-anchor="middle">redis:7.2</text>
+  <text x="740" y="618" font-size="12.5" text-anchor="middle" fill="#4a5568">Celery Broker 任务消息队列</text>
+  <text x="740" y="638" font-size="12" text-anchor="middle" fill="#718096">仅 Compose 内部网络，不发布宿主机端口</text>
+
+  <rect x="960" y="560" width="300" height="85" rx="10" fill="#f7fafc" stroke="#718096" stroke-width="1.5"/>
+  <text x="1110" y="592" font-size="15" font-weight="700" text-anchor="middle">flower 监控面板</text>
+  <text x="1110" y="618" font-size="12.5" text-anchor="middle" fill="#4a5568">队列 · Worker 在线状态 · 耗时与重试</text>
+  <text x="1110" y="638" font-size="12" text-anchor="middle" fill="#718096">宿主机 15555 → 容器 5555</text>
+
+  <!-- 挂载目录 -->
+  <rect x="80" y="675" width="1250" height="42" rx="8" fill="#fffaf0" stroke="#e8b76d"/>
+  <text x="100" y="701" font-size="13.5" font-weight="700" fill="#9c6b1e">挂载卷（宿主机目录 ↔ 容器 /opt/airflow）：</text>
+  <text x="390" y="701" font-size="13" fill="#4a5568">dags/ DAG 定义　·　skills/ 可复用 Skill 代码包　·　output/ 草稿 · 发送记录 · 归档 · 状态快照　·　logs/ 任务运行日志</text>
+
+  <!-- 连线：浏览器/网关 -> apiserver -->
+  <line x1="195" y1="260" x2="195" y2="398" stroke="#2b6cb0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="210" y="340" font-size="12" fill="#2b6cb0">HTTP / 页面查询</text>
+  <line x1="1247" y1="253" x2="260" y2="398" stroke="#2b6cb0" stroke-width="2" stroke-dasharray="7 4" marker-end="url(#arrowBlue)"/>
+  <text x="760" y="330" font-size="12.5" fill="#2b6cb0">REST 请求：POST /auth/token 换取 JWT Bearer，再调用 /api/v2/dags/…/dagRuns 触发与轮询</text>
+
+  <!-- scheduler -> redis -> worker -->
+  <line x1="480" y1="495" x2="700" y2="558" stroke="#2f855a" stroke-width="1.8" marker-end="url(#arrowGreen)"/>
+  <line x1="870" y1="590" x2="1180" y2="497" stroke="#2f855a" stroke-width="1.8" marker-end="url(#arrowGreen)"/>
+  <text x="560" y="535" font-size="12" fill="#2f855a">投递任务消息</text>
+  <text x="980" y="535" font-size="12" fill="#2f855a">Worker 拉取执行</text>
+
+  <!-- 元数据库读写 -->
+  <line x1="480" y1="495" x2="380" y2="558" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="720" y1="495" x2="420" y2="558" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1215" y1="495" x2="430" y2="558" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="470" y="515" font-size="12" fill="#444">状态 / XCom 回写 Postgres</text>
+
+  <!-- worker -> 挂载产物 -->
+  <line x1="1215" y1="495" x2="1215" y2="673" stroke="#9c6b1e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="1230" y="600" font-size="12" fill="#9c6b1e">读取 Skill / 写入产物</text>
+
+  <!-- ============ 区域三：三个课程 DAG 编排 ============ -->
+  <rect x="40" y="755" width="1320" height="355" rx="14" fill="#fff7ec" stroke="#f3c289" stroke-width="1.5"/>
+  <text x="60" y="787" font-size="17" font-weight="700" fill="#c05621">三个课程 DAG：任务依赖、定时调度与异常兜底（dags/）</text>
+
+  <!-- DAG01 -->
+  <text x="60" y="828" font-size="14" font-weight="700" fill="#1a202c">DAG01 email_daily_report　cron 0 9 * * *（每天 09:00）· 线性链 + all_done 汇总</text>
+  <g font-size="12.5" fill="#1a202c">
+    <rect x="60" y="842" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="150" y="869" text-anchor="middle">prepare_report_data</text>
+    <rect x="290" y="842" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="380" y="869" text-anchor="middle">render_email_draft</text>
+    <rect x="520" y="842" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="610" y="869" text-anchor="middle">send_report_email</text>
+    <rect x="750" y="842" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="840" y="869" text-anchor="middle">archive_and_verify</text>
+    <rect x="980" y="842" width="200" height="44" rx="8" fill="#fff" stroke="#c05621" stroke-dasharray="6 3"/>
+    <text x="1080" y="862" text-anchor="middle">final_summary</text>
+    <text x="1080" y="880" text-anchor="middle" font-size="11" fill="#718096">trigger_rule=all_done</text>
+  </g>
+  <line x1="240" y1="864" x2="288" y2="864" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="470" y1="864" x2="518" y2="864" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="700" y1="864" x2="748" y2="864" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="930" y1="864" x2="978" y2="864" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- DAG02 -->
+  <text x="60" y="926" font-size="14" font-weight="700" fill="#1a202c">DAG02 skill_pipeline_evening　cron 0 18 * * *（每天 18:00）· 并行分支汇合</text>
+  <g font-size="12.5" fill="#1a202c">
+    <rect x="60" y="952" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="150" y="979" text-anchor="middle">prepare_report_data</text>
+    <rect x="330" y="936" width="180" height="38" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="420" y="960" text-anchor="middle">render_email_draft</text>
+    <rect x="330" y="984" width="180" height="38" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="420" y="1008" text-anchor="middle">prepare_attachment</text>
+    <rect x="610" y="952" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="700" y="979" text-anchor="middle">send_report_email</text>
+    <rect x="840" y="952" width="180" height="44" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="930" y="979" text-anchor="middle">archive_and_verify</text>
+  </g>
+  <line x1="240" y1="974" x2="328" y2="955" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="240" y1="974" x2="328" y2="1003" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="510" y1="955" x2="608" y2="968" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="510" y1="1003" x2="608" y2="980" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="790" y1="974" x2="838" y2="974" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- DAG03 -->
+  <text x="60" y="1056" font-size="14" font-weight="700" fill="#1a202c">DAG03 llm_skill_dispatch　schedule=None（仅 API / 手动触发）· 按 conf.skill 路由</text>
+  <g font-size="12.5" fill="#1a202c">
+    <rect x="60" y="1068" width="220" height="34" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="170" y="1090" text-anchor="middle">route_execute（注册表匹配 Skill）</text>
+  </g>
+  <line x1="280" y1="1085" x2="345" y2="1085" stroke="#444" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g font-size="12.5" fill="#1a202c">
+    <rect x="350" y="1068" width="150" height="34" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="425" y="1090" text-anchor="middle">send_email</text>
+    <rect x="540" y="1068" width="170" height="34" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="625" y="1090" text-anchor="middle">collect_data</text>
+    <rect x="760" y="1068" width="150" height="34" rx="8" fill="#fff" stroke="#c05621"/>
+    <text x="835" y="1090" text-anchor="middle">archive</text>
+  </g>
+</svg>

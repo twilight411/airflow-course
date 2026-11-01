@@ -1,0 +1,15 @@
+llm_enabled= True base_url= https://api.deepseek.com model= deepseek-chat
+{
+  "dag_id": "email_daily_report",
+  "skill": "send_email",
+  "conf": {
+    "to": "zhang@whu.edu.cn",
+    "recipient_name": "张老师",
+    "subject": "Airflow 课程作业进展"
+  },
+  "rationale": "用户需求是向指定收件人发送一封项目进度汇报邮件，属于邮件汇报类需求，直接匹配 email_daily_report。",
+  "confidence": 0.95,
+  "source": "deepseek",
+  "valid": true,
+  "error": null
+}

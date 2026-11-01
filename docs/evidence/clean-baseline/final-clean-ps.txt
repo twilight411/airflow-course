@@ -1,0 +1,11 @@
+NAME                                     STATUS
+airflow-course-airflow-apiserver-1       Up 2 minutes (healthy)
+airflow-course-airflow-dag-processor-1   Up 2 minutes (healthy)
+airflow-course-airflow-scheduler-1       Up 2 minutes (healthy)
+airflow-course-airflow-triggerer-1       Up 2 minutes (healthy)
+airflow-course-airflow-worker-1          Up About a minute (healthy)
+airflow-course-flower-1                  Up 2 minutes (healthy)
+airflow-course-postgres-1                Up 3 minutes (healthy)
+airflow-course-redis-1                   Up 3 minutes (healthy)
+airflow_health_http=200
+flower_http=200

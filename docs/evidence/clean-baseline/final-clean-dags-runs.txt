@@ -1,0 +1,13 @@
+email_daily_report scheduled__2026-11-01T01:00:00+00:00 success
+  prepare_report_data success
+  render_email_draft success
+  send_report_email success
+  archive_and_verify success
+  final_summary success
+skill_pipeline_evening scheduled__2026-11-01T10:00:00+00:00 success
+  prepare_report_data success
+  prepare_attachment success
+  render_email_draft success
+  send_report_email success
+  archive_and_verify success
+llm_skill_dispatch runs= 0

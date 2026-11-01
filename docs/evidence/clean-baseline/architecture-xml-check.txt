@@ -1,0 +1,4 @@
+svg_parse=ok
+width= 1400
+height= 1120
+text_nodes= 74

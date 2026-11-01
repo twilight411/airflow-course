@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "description": "LLM 网关可调度的 Airflow DAG / Skill 注册表。大模型只能从本表选择目标，禁止编造 dag_id。",
+  "dags": [
+    {
+      "dag_id": "email_daily_report",
+      "skill": "send_email",
+      "name": "定时邮件汇报流水线",
+      "description": "采集日报数据 -> 渲染邮件草稿 -> SMTP 发送 -> 归档校验，适合日报、周报、进度汇报、提醒通知类需求。",
+      "default_schedule": "0 9 * * *",
+      "default_schedule_note": "每天北京时间 09:00 自动运行；手动/API 触发时立即执行。",
+      "params_schema": {
+        "to": {"type": "string", "required": false, "description": "收件人邮箱，多个用英文逗号分隔"},
+        "subject": {"type": "string", "required": false, "description": "邮件主题"},
+        "recipient_name": {"type": "string", "required": false, "description": "称呼对象，如 张老师"},
+        "text_body": {"type": "string", "required": false, "description": "纯文本正文，覆盖默认模板"},
+        "highlights": {"type": "array", "items": "string", "required": false, "description": "重点事项列表"}
+      },
+      "example_conf": {
+        "to": "teacher@example.com",
+        "subject": "项目进度汇报",
+        "recipient_name": "张老师",
+        "highlights": ["完成 Airflow 环境搭建", "邮件 Skill 已接入 DAG"]
+      }
+    },
+    {
+      "dag_id": "skill_pipeline_evening",
+      "skill": "send_email_parallel",
+      "name": "并行分支多 Skill 流水线",
+      "description": "数据准备后并行执行邮件渲染与附件摘要，汇合后发送归档；适合需要附件与正文并行准备的复杂通知。",
+      "default_schedule": "0 18 * * *",
+      "default_schedule_note": "每天北京时间 18:00 自动运行。",
+      "params_schema": {
+        "to": {"type": "string", "required": false},
+        "subject": {"type": "string", "required": false},
+        "highlights": {"type": "array", "items": "string", "required": false}
+      },
+      "example_conf": {"to": "team@example.com", "subject": "晚间工作流汇总"}
+    },
+    {
+      "dag_id": "llm_skill_dispatch",
+      "skill_dispatch": true,
+      "name": "通用 Skill 调度器（LLM 直选 Skill）",
+      "description": "不绑定固定业务流程，由大模型选择已注册 Skill 后即时路由执行；conf 必须包含 skill 字段。",
+      "default_schedule": null,
+      "default_schedule_note": "仅接受 API / 手动触发，无定时调度。",
+      "available_skills": ["send_email", "collect_data", "archive"],
+      "params_schema": {
+        "skill": {"type": "string", "required": true, "enum": ["send_email", "collect_data", "archive"]},
+        "payload": {"type": "object", "required": false},
+        "conf": {"type": "object", "required": false, "description": "透传给所选 Skill 的运行参数"}
+      }
+    }
+  ]
+}

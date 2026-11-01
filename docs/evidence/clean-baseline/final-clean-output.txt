@@ -1,0 +1,25 @@
+email_daily_report scheduled__2026-11-01T01:00:00+00:00 success
+  prepare_report_data success
+  render_email_draft success
+  send_report_email success
+  archive_and_verify success
+  final_summary success
+skill_pipeline_evening scheduled__2026-11-01T10:00:00+00:00 success
+  prepare_report_data success
+  prepare_attachment success
+  render_email_draft success
+  send_report_email success
+  archive_and_verify success
+OUTPUT FILES
+output/.gitkeep
+output/archive/index.jsonl
+output/archive/scheduled__2026-11-01T01_00_00_00_00/run_summary.json
+output/archive/scheduled__2026-11-01T10_00_00_00_00/run_summary.json
+output/attachments/scheduled__2026-11-01T100000+0000.txt
+output/drafts/20261101-201625_scheduled__2026-11-01T01_00_00_00_00.eml
+output/drafts/20261101-201625_scheduled__2026-11-01T10_00_00_00_00.eml
+output/drafts/20261101-201627_scheduled__2026-11-01T01_00_00_00_00.eml
+output/drafts/20261101-201627_scheduled__2026-11-01T10_00_00_00_00.eml
+output/send_records.jsonl
+output/status/email_daily_report__scheduled__2026-11-01T01_00_00_00_00.json
+output/status/skill_pipeline_evening__scheduled__2026-11-01T10_00_00_00_00.json

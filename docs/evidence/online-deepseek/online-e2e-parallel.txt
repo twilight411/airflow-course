@@ -1,0 +1,25 @@
+2026-11-01 19:12:22,440 [bridge.airflow_client] INFO Airflow JWT Token 已获取
+2026-11-01 19:12:22,554 [bridge.airflow_client] INFO 已触发 DAG skill_pipeline_evening, run_id=manual__2026-11-01T11:12:22.522365+00:00
+2026-11-01 19:12:22,554 [bridge.orchestrator] INFO DAG Run 已触发: skill_pipeline_evening/manual__2026-11-01T11:12:22.522365+00:00
+2026-11-01 19:12:22,574 [bridge.airflow_client] INFO DAG Run 状态: queued
+2026-11-01 19:12:25,618 [bridge.airflow_client] INFO DAG Run 状态: running
+2026-11-01 19:12:28,645 [bridge.airflow_client] INFO DAG Run 状态: success
+
+========================================================================
+【需求】走并行流水线，准备附件摘要后给 team@example.com 发晚间汇总
+------------------------------------------------------------------------
+意图来源: deepseek    置信度: 0.95
+目标 DAG: skill_pipeline_evening
+选择理由: 用户明确要求走并行流水线并准备附件摘要后发送晚间汇总，符合 skill_pipeline_evening 的并行分支与附件摘要能力。
+调度参数: {"to": "team@example.com", "subject": "晚间工作流汇总"}
+
+DAG Run : manual__2026-11-01T11:12:22.522365+00:00
+最终状态: ✅ success
+任务状态:
+  ✅ prepare_report_data      success
+  ✅ prepare_attachment       success
+  ✅ render_email_draft       success
+  ✅ send_report_email        success
+  ✅ archive_and_verify       success
+耗时: 7.57s
+========================================================================

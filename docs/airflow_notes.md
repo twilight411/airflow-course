@@ -60,7 +60,7 @@
 2. **并行分支 + 汇合（join）**：`t_prepare >> [t_attach, t_render] >> t_send`；
    `t_send` 隐式 `trigger_rule=ALL_SUCCESS`，两条分支都成功才执行。
 3. **兜底汇总**：`final_summary` 设置 `trigger_rule="all_done"`，无论上游成功、失败、跳过后都执行，
-   用于产出执行画像，体现“异常路径也要有监控输出”。
+   用于记录任务状态，保证异常路径也有监控输出。
 4. **`depends_on_past=False`**：任务不依赖上一次 DAG Run 同名任务的状态，适合独立日报任务。
 
 ## 4. 定时调度
@@ -106,7 +106,7 @@ conf、各任务状态、异常摘要写入 `output/status/<dag_id>__<run_id>.js
 | `execution_timeout=10min` | `default_args` | 单任务超时强制失败，防止任务挂死占用 worker |
 | `on_failure_callback` | `default_args` | 任务/DAG 失败写失败快照，记录异常类型与堆栈摘要 |
 | `on_success_callback` | `default_args` | 成功写成功快照 |
-| `trigger_rule=all_done` | `final_summary` | 异常路径下仍输出执行画像 |
+| `trigger_rule=all_done` | `final_summary` | 异常路径下仍记录任务状态 |
 | Skill 内部异常分类 | `skills/email_sender/sender.py` | 参数非法抛 `ValueError`（不重试）；SMTP 阶段抛 `EmailSkillError`（可重试）；凭据缺失自动降级 DRY_RUN |
 | 归档交付校验 | `skills/archiver/archiver.py` | 上一条发送记录非成功状态直接 `RuntimeError`，防止“假成功”归档 |
 | 网关侧异常回传 | `llm_bridge/orchestrator.py` | 轮询终态、识别失败任务、解析 Airflow 3 结构化日志并抽取异常类型、出错位置形成汇报 |

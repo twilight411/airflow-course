@@ -54,7 +54,7 @@ def _status_snapshot(context: Dict[str, Any], status: str) -> Dict[str, Any]:
     run_id = dag_run.run_id if dag_run else None
 
     # Airflow 3 的 DagRun SDK 对象不再提供 get_task_instances()；
-    # 回调按任务先后触发，这里读取上一次快照合并各任务状态，形成累积执行画像。
+    # 回调按任务先后触发，这里读取上一次快照并合并各任务状态。
     task_states: Dict[str, str] = {}
     prev_path = _snapshot_path(dag_id, run_id)
     if prev_path.exists():

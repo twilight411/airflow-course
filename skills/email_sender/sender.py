@@ -82,7 +82,7 @@ def render_report(context: Dict[str, Any]) -> Dict[str, str]:
   <ul>{highlight_items or '<li>（本次无重点事项）</li>'}</ul>
   <p style="color:#666;font-size:12px">{closing}</p>
   <hr style="border:none;border-top:1px solid #ddd">
-  <p style="color:#999;font-size:12px">Airflow 自动化工作流 · email_sender Skill 自动生成</p>
+  <p style="color:#999;font-size:12px">Airflow 课程作业 · email_sender Skill</p>
 </body></html>"""
 
     return {"subject": title, "text": text, "html": html}

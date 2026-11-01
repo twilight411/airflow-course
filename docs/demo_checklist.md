@@ -17,8 +17,8 @@
 - [ ] 打开任意任务历史实例的 Logs、XCom 标签，说明监控手段
 
 ## 阶段 2：Skill 集成与定时邮件工作流（4 分钟）—— 任务 2
-- [ ] 打开 `skills/email_sender/SKILL.md`，讲输入/输出契约与技能关系建模（对照 SkillFabri 思路）
-- [ ] 打开 `skills/email_sender/sender.py`，讲渲染 → 草稿落盘 → SMTP 发送 → 记录追加；未配置凭据或显式 DRY_RUN 时的离线降级逻辑
+- [ ] 打开 `skills/email_sender/SKILL.md`，讲输入输出字段和 Skill 之间的关系（参考 SkillFabri 写法）
+- [ ] 打开 `skills/email_sender/sender.py`，讲渲染、保存草稿、SMTP 发送、追加记录；未配置凭据或显式 DRY_RUN 时的离线降级逻辑
 - [ ] 打开 `dags/01_email_daily_report_dag.py`，讲三个 Skill 如何被封装为 PythonOperator
 - [ ] UI 手动 Trigger DAG w/ config，输入：
   ```json
@@ -33,7 +33,7 @@
 ## 阶段 3：大模型自然语言驱动编排（4 分钟）—— 任务 3
 - [ ] 打开 `llm_bridge/intent_registry.json`，讲“注册表约束大模型只能选择已有 DAG/Skill”
 - [ ] 打开 `llm_bridge/` 各文件：`deepseek_client.py`、`intent_parser.py`、`airflow_rest_client.py`、
-      `orchestrator.py`、`cli.py`，讲分层职责
+      `orchestrator.py`、`cli.py`，讲各文件分工
 - [ ] 终端运行 `python llm_bridge/cli.py`（默认 DeepSeek 在线；备用离线兜底命令为 `python llm_bridge/cli.py --no-llm`）
 - [ ] 依次输入：
   1. `给 zhang@whu.edu.cn 张老师发一封项目进度汇报邮件，主题是 Airflow 课程作业进展`
@@ -46,10 +46,10 @@
 - [ ] 终端 `list` 展示能力目录；`status email_daily_report <run_id>` 演示状态查询
 - [ ] （可选异常演示）触发 DAG03 并传入 `{"skill": "not_registered_skill"}`，观察失败任务、重试记录与网关回传的异常类型、出错文件行号和失败快照说明
 
-## 阶段 4：创新点与问题总结（2 分钟）
-- [ ] 对照 README“创新点”逐条讲
+## 阶段 4：实现要点与问题总结（2 分钟）
+- [ ] 对照 README“实现要点”逐条讲
 - [ ] 打开 `docs/problems_and_solutions.md`，讲部署中遇到的问题与解决方式、当前局限与后续方向
-- [ ] 收尾：整体链路回放（自然语言 → 意图 → REST → DAG → Skill → 监控 → 异常回传）
+- [ ] 收尾：按自然语言、意图识别、REST 触发、DAG、Skill 执行、状态监控和异常回传的顺序回放一遍
 
 ## 录屏前自检
 - [ ] 三个 DAG 均已 unpause；`output/` 目录干净或已有成功产物

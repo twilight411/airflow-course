@@ -13,8 +13,8 @@
 调度参数: {"skill": "send_email", "payload": {}, "conf": {"to": "ops@example.com", "subject": "网关在线联调通知", "text_body": "网关在线联调通知"}}
 
 DAG Run : manual__2026-11-01T11:13:25.098891+00:00
-最终状态: ✅ success
+最终状态: [OK] success
 任务状态:
-  ✅ route_execute            success
+  [OK] route_execute            success
 耗时: 4.54s
 ========================================================================

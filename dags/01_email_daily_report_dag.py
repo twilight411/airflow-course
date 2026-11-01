@@ -9,9 +9,9 @@ DAG 01 —— 定时邮件汇报工作流（任务 2 主 DAG）
 覆盖知识点：
 - 任务依赖：线性链式依赖（>> 运算符）；
 - 定时调度：cron 表达式 0 9 * * *（每天 09:00，Asia/Shanghai）；
-- 执行监控：XCom 传递上下文、任务状态快照回调、归档目录可追溯；
+- 执行监控：XCom 传递上下文、任务状态快照回调、归档记录可查看；
 - 异常处理：retries + 指数退避重试、失败回调、execution_timeout、ALL_DONE 兜底汇总任务；
-- Skill 集成：三个独立 Skill 被封装为 PythonOperator，可被其他 DAG / LLM 网关复用。
+- Skill 集成：三个独立 Skill 被封装为 PythonOperator，供 DAG 调用。
 
 运行参数（手动 Trigger DAG w/ config 或 REST API conf 覆盖）：
 {
@@ -119,10 +119,10 @@ def archive_and_verify(**kwargs) -> dict:
 
 
 def final_summary(**kwargs) -> dict:
-    """兜底汇总任务：无论上游成功/失败都执行（trigger_rule=ALL_DONE），输出执行画像。
+    """兜底汇总任务：无论上游成功/失败都执行（trigger_rule=ALL_DONE），记录各任务状态。
 
     Airflow 3 的 DagRun SDK 对象不再提供 get_task_instances()，
-    这里通过上游 XCom 是否存在来推断成功状态，避免跨模型查询耦合。
+    这里通过上游 XCom 是否存在来推断成功状态。
     """
     ti = kwargs["ti"]
     upstream_ids = [
@@ -145,7 +145,7 @@ def final_summary(**kwargs) -> dict:
         "finished_at": datetime.now(CST).isoformat(),
     }
     ti.xcom_push(key="dag_summary", value=summary)
-    log.info("DAG 执行画像: %s", task_states)
+    log.info("DAG 任务状态汇总: %s", task_states)
     return summary
 
 
@@ -197,5 +197,5 @@ with DAG(
         trigger_rule="all_done",
     )
 
-    # 线性依赖链；汇总任务挂在最后，ALL_DONE 保证异常场景也能输出状态画像
+    # 线性依赖链；汇总任务挂在最后，ALL_DONE 保证异常场景也能记录状态
     t_prepare >> t_render >> t_send >> t_archive >> t_summary

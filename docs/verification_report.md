@@ -1,4 +1,4 @@
-# 端到端验证报告（录屏前自查留档）
+# 运行验证报告（录屏前自查留档）
 
 > 验证时间：2026-11-01（北京时间）
 > 工程路径：`D:\DoubaoWork\airflow-course`
@@ -41,7 +41,7 @@ test_registry_consistency.py 全部通过
 test_failure_summary.py 全部通过
 ```
 
-## 3. DeepSeek 在线真实闭环结果（2026-11-01 补测）
+## 3. DeepSeek 在线联调结果（2026-11-01 补测）
 
 在线配置：`DEEPSEEK_BASE_URL=https://api.deepseek.com`，`DEEPSEEK_MODEL=deepseek-chat`，
 走 OpenAI 兼容 `/chat/completions` 并强制 `response_format=json_object`。下列需求均由
@@ -50,11 +50,11 @@ test_failure_summary.py 全部通过
 
 | 自然语言需求 | 意图来源 | 目标 DAG / Skill | Run ID | 状态 | 耗时 | 证据日志 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 给 zhang@whu.edu.cn 张老师发一封项目进度汇报邮件，主题是 Airflow 课程作业进展 | `deepseek`，置信度 0.95 | `email_daily_report` / `send_email` | `manual__2026-11-01T11:12:08.379078+00:00` | 5 任务 success | 7.77s | `online-e2e-email.txt` |
-| 走并行流水线，准备附件摘要后给 team@example.com 发晚间汇总 | `deepseek`，置信度 0.95 | `skill_pipeline_evening` | `manual__2026-11-01T11:12:22.522365+00:00` | 5 任务 success | 7.57s | `online-e2e-parallel.txt` |
-| 采集今天运行数据 | `deepseek`，置信度 0.90 | `llm_skill_dispatch` / `collect_data` | `manual__2026-11-01T11:12:36.347670+00:00` | `route_execute` success | 4.93s | `online-e2e-collect.txt` |
-| 把刚才的发送记录归档整理一下 | `deepseek`，置信度 0.85 | `llm_skill_dispatch` / `archive` | `manual__2026-11-01T11:12:48.193075+00:00` | `route_execute` success | 4.62s | `online-e2e-archive.txt` |
-| 调用 `send_email` Skill 给 ops@example.com 发一条网关在线联调通知 | `deepseek`，置信度 0.90 | `llm_skill_dispatch` / `send_email` | `manual__2026-11-01T11:13:25.098891+00:00` | `route_execute` success | 4.54s | `online-e2e-dispatch-send-email.txt` |
+| 给 zhang@whu.edu.cn 张老师发一封项目进度汇报邮件，主题是 Airflow 课程作业进展 | `deepseek`，置信度 0.95 | `email_daily_report` / `send_email` | `manual__2026-11-01T11:12:08.379078+00:00` | 5 任务 success | 7.77s | `online-email.txt` |
+| 走并行流水线，准备附件摘要后给 team@example.com 发晚间汇总 | `deepseek`，置信度 0.95 | `skill_pipeline_evening` | `manual__2026-11-01T11:12:22.522365+00:00` | 5 任务 success | 7.57s | `online-parallel.txt` |
+| 采集今天运行数据 | `deepseek`，置信度 0.90 | `llm_skill_dispatch` / `collect_data` | `manual__2026-11-01T11:12:36.347670+00:00` | `route_execute` success | 4.93s | `online-collect.txt` |
+| 把刚才的发送记录归档整理一下 | `deepseek`，置信度 0.85 | `llm_skill_dispatch` / `archive` | `manual__2026-11-01T11:12:48.193075+00:00` | `route_execute` success | 4.62s | `online-archive.txt` |
+| 调用 `send_email` Skill 给 ops@example.com 发一条网关在线联调通知 | `deepseek`，置信度 0.90 | `llm_skill_dispatch` / `send_email` | `manual__2026-11-01T11:13:25.098891+00:00` | `route_execute` success | 4.54s | `online-dispatch-send-email.txt` |
 
 在线链路验证结论：
 
@@ -62,14 +62,14 @@ test_failure_summary.py 全部通过
 2. 输出先经过 `intent_registry.json` 白名单交叉校验，不允许选择未注册 DAG/Skill；
 3. 五轮在线触发均被 Airflow 正常调度到终态 success；DAG03 三个注册 Skill 均已在线覆盖；
 4. 无关需求“帮我订一张去火星的火箭票”未得到可注册 DAG，解析器切换规则兜底，规则未命中后
-   在发起 Airflow REST 请求前拒绝，未创建 DAG Run，证据为 `online-rejection-check.txt`；
+   在发起 Airflow REST 请求前拒绝，未创建 DAG Run，证据为 `online-rejection.txt`；
 5. 本轮在线验证覆盖 **LLM → 意图校验 → Airflow 触发 → 状态轮询回传** 链路；当时邮件仍处于
    `DRY_RUN`。后续已补充 QQ SMTP 宿主机独立自测，发件人与收件人均为本地配置邮箱，结果为 `SENT`，
    自测记录保存在被 `.gitignore` 排除的 `logs/smtp-selftest.json`。
 
-## 4. 真实 Airflow 集群闭环结果（历史规则兜底模式，录屏前已重置）
+## 4. Airflow 集群规则模式验证结果（录屏前已重置）
 
-> 下列 Run ID 是正式录屏前在重建集群上完成规则模式闭环验证时产生的历史记录；验证结束后已执行
+> 下列 Run ID 是正式录屏前在重建集群上完成规则模式验证时产生的历史记录；验证结束后已执行
 > `scripts/reset.ps1` 清空元数据与产物，录屏现场会重新触发新的演示 Run。
 
 ### 4.1 邮件意图 → `email_daily_report`
@@ -83,7 +83,7 @@ test_failure_summary.py 全部通过
 - Run ID：`manual__2026-11-01T10:55:42.586245+00:00`
 - 最终状态：`success`
 - 任务链：`prepare_report_data → render_email_draft → send_report_email → archive_and_verify → final_summary`，5 个任务全部 `success`
-- 网关闭环耗时：9.54 秒
+- 网关耗时：9.54 秒
 
 ### 4.2 并行流水线意图 → `skill_pipeline_evening`
 
@@ -95,7 +95,7 @@ test_failure_summary.py 全部通过
 - Run ID：`manual__2026-11-01T10:55:52.609566+00:00`
 - 最终状态：`success`
 - 任务状态：`prepare_report_data`、`prepare_attachment`、`render_email_draft`、`send_report_email`、`archive_and_verify` 全部 `success`；两个并行分支均成功后汇合发送
-- 网关闭环耗时：6.43 秒
+- 网关耗时：6.43 秒
 
 ### 4.3 采集意图 → `llm_skill_dispatch / collect_data`
 
@@ -107,7 +107,7 @@ test_failure_summary.py 全部通过
 - Skill：`collect_data`
 - Run ID：`manual__2026-11-01T10:55:59.508943+00:00`
 - 最终状态：`success`，`route_execute` 成功
-- 网关闭环耗时：3.37 秒
+- 网关耗时：3.37 秒
 
 ### 4.4 归档意图 → `llm_skill_dispatch / archive`
 
@@ -119,7 +119,7 @@ test_failure_summary.py 全部通过
 - Skill：`archive`
 - Run ID：`manual__2026-11-01T10:56:03.435549+00:00`
 - 最终状态：`success`，`route_execute` 成功
-- 网关闭环耗时：3.44 秒
+- 网关耗时：3.44 秒
 
 ### 4.5 DAG03 `send_email` 分支自检
 
@@ -130,7 +130,7 @@ test_failure_summary.py 全部通过
 
 至此 DAG03 注册表三个 Skill 分支（`send_email`、`collect_data`、`archive`）均已在重建后的集群实机验证。
 
-### 4.6 未注册 Skill 异常闭环
+### 4.6 未注册 Skill 异常处理验证
 
 通过 REST 触发 `llm_skill_dispatch`，传入 `skill=not_registered_skill`：
 
@@ -176,7 +176,7 @@ cd D:\DoubaoWork\airflow-course
 - `llm_skill_dispatch` 无定时 Run，仅接受 API / 手动触发；
 - 两个基线归档目录均按当前 `run_id / message_id` 匹配发送记录，并发补跑时不会串用其他 DAG 的草稿；
 - 两个基线邮件发送记录均为 `SENT`、`mode=smtp`，SMTP 账号、授权码和收件人只存本地被忽略的 `.env`；
-- 两个基线状态快照均保留全部任务状态，DAG02 的并行分支回调不会互相覆盖状态画像。
+- 两个基线状态快照均保留全部任务状态，DAG02 的并行分支回调不会互相覆盖状态记录。
 
 录屏现场再通过网关依次触发邮件、并行、采集、归档四个需求，即可形成新的演示 Run；失败探针可作为可选异常演示。
 

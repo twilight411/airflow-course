@@ -53,9 +53,9 @@ def build_orchestrator(force_no_llm: bool = False) -> Orchestrator:
 # --------------------------------------------------------------------------- #
 # 输出格式化
 # --------------------------------------------------------------------------- #
-STATE_EMOJI = {
-    "success": "✅", "failed": "❌", "running": "🔄", "queued": "⏳",
-    "up_for_retry": "🔁", "upstream_failed": "⚠️", "skipped": "⏭️",
+STATE_MARK = {
+    "success": "[OK]", "failed": "[FAIL]", "running": "[RUN]", "queued": "[WAIT]",
+    "up_for_retry": "[RETRY]", "upstream_failed": "[UP-FAIL]", "skipped": "[SKIP]",
 }
 
 
@@ -83,11 +83,11 @@ def _print_report(report: Dict[str, Any], as_json: bool = False) -> None:
         return
 
     print(f"\nDAG Run : {report.get('run_id')}")
-    print(f"最终状态: {STATE_EMOJI.get(report.get('final_state'), 'ℹ️')} {report.get('final_state')}")
+    print(f"最终状态: {STATE_MARK.get(report.get('final_state'), '[INFO]')} {report.get('final_state')}")
     print("任务状态:")
     for task in report.get("tasks", []):
-        icon = STATE_EMOJI.get(task["state"], "ℹ️")
-        print(f"  {icon} {task['task_id']:<24} {task['state']}")
+        mark = STATE_MARK.get(task["state"], "[INFO]")
+        print(f"  {mark} {task['task_id']:<24} {task['state']}")
 
     if report.get("failure_summary"):
         print("\n异常汇总:")

@@ -43,7 +43,7 @@
   在线 `deepseek-chat`。无 Key、网络超时、Key 失效或输出不合法时自动切换
   `rule_fallback` 中文规则引擎，保证离线环境仍能完成“NL → DAG → 触发 → 监控”演示。
 - **实测**：2026-11-01 在线 DeepSeek 完成邮件、并行、采集、归档、DAG03 `send_email` 五轮
-  闭环，无关需求在 REST 调用前被拒绝；证据见 `docs/evidence/online-deepseek/`。
+  触发并执行成功，无关需求在 REST 调用前被拒绝；证据见 `docs/evidence/online-deepseek/`。
 
 ### 7. Airflow 3 认证路由与业务接口分属不同命名空间
 - **现象**：网关 POST 令牌到 `/api/v2/auth/token` 返回 405 Method Not Allowed。
@@ -68,7 +68,7 @@
   `localhost` 每次约 20 秒，`127.0.0.1` 约 0.02–0.1 秒；根因是 urllib 解析 `localhost`
   时优先尝试 `::1`（IPv6），Windows/Docker Desktop 该地址不可达后等待回退到 IPv4。
 - **解决**：网关 `AIRFLOW_BASE_URL` 默认与配置示例改为 `http://127.0.0.1:18080`；
-  浏览器访问 UI 仍可用 `localhost`。最近一次重建后实测：单次邮件闭环 9.54 秒、
+  浏览器访问 UI 仍可用 `localhost`。最近一次重建后实测：单次邮件耗时 9.54 秒、
   并行流水线 6.43 秒、单 Skill 调度约 3.37–3.44 秒。
 
 ### 10. 规则兜底不再“默认发邮件”，未识别需求直接拒绝触发
@@ -108,7 +108,7 @@
 
 ### 14. 并行任务状态快照回调发生读-改-写竞态
 - **现象**：DAG02 的 `render_email_draft` 与 `prepare_attachment` 并行执行，两个成功回调同时
-  读取旧状态快照后分别写回，后写覆盖先写，最终 `output/status/` 画像只保留部分并行任务状态。
+  读取旧状态快照后分别写回，后写覆盖先写，最终 `output/status/` 中只保留部分并行任务状态。
 - **解决**：`_write_snapshot` 在落盘前重新读取已有快照并合并任务状态，再用临时文件 +
   `os.replace` 原子替换；已有 `failed / upstream_failed` 状态不会被后续成功任务覆盖。
   新增 `tests/test_status_snapshot_merge.py` 回归覆盖并行合并与失败保留。
@@ -121,14 +121,14 @@
 | 示例 DAG | `LOAD_EXAMPLES=false` | 界面只保留课程 DAG，演示清晰 |
 | 时区 | `Asia/Shanghai` | cron 按北京时间解释，与口播一致 |
 | 网关依赖 | 纯标准库 urllib | 宿主机免装第三方包，跨机器可直接运行 |
-| 意图安全 | 注册表白名单校验 + 规则显式匹配拒绝 | 大模型只能选择已存在的 DAG/Skill；规则引擎未命中也不默认兜底，防止幻觉或误触发 |
+| 意图安全 | 注册表白名单校验 + 规则显式匹配拒绝 | 大模型只能选择已存在的 DAG/Skill；规则引擎未命中也不默认兜底，避免选择不存在的工作流或误触发 |
 | 归档一致性 | 按 `run_id / message_id` 匹配当前发送记录 | 避免多个 DAG 并发运行时归档目录串用其他 Run 的草稿 |
 | 状态快照合并 | 写入前重读快照并原子替换 | 避免并行任务回调互相覆盖，失败状态可长期保留 |
 | 网关地址 | REST 使用 127.0.0.1，浏览器 UI 使用 localhost | 规避 Windows 下 localhost IPv6 不可达导致的每次连接约 20 秒回退等待 |
 
 ## 三、当前局限与尚未完全解决的难点（探索方向）
 
-### 1. 自然语言修改定时规则尚未闭环
+### 1. 自然语言修改定时规则还没有实现
 现状：调度时间写在 DAG 的 `schedule` 参数里；网关只能触发“立即执行一次”。
 难点：DAG schedule 属于拓扑定义，运行时动态修改需要走 DAG 版本管理 / REST 改参数 /
 动态 DAG 生成，涉及调度器重解析与历史 Run 一致性。后续可扩展：大模型解析 cron 后，

@@ -14,12 +14,12 @@
 调度参数: {"to": "zhang@whu.edu.cn", "recipient_name": "张老师", "subject": "Airflow 课程作业进展"}
 
 DAG Run : manual__2026-11-01T11:12:08.379078+00:00
-最终状态: ✅ success
+最终状态: [OK] success
 任务状态:
-  ✅ prepare_report_data      success
-  ✅ render_email_draft       success
-  ✅ send_report_email        success
-  ✅ archive_and_verify       success
-  ✅ final_summary            success
+  [OK] prepare_report_data      success
+  [OK] render_email_draft       success
+  [OK] send_report_email        success
+  [OK] archive_and_verify       success
+  [OK] final_summary            success
 耗时: 7.77s
 ========================================================================

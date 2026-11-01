@@ -14,12 +14,12 @@
 调度参数: {"to": "team@example.com", "subject": "晚间工作流汇总"}
 
 DAG Run : manual__2026-11-01T11:12:22.522365+00:00
-最终状态: ✅ success
+最终状态: [OK] success
 任务状态:
-  ✅ prepare_report_data      success
-  ✅ prepare_attachment       success
-  ✅ render_email_draft       success
-  ✅ send_report_email        success
-  ✅ archive_and_verify       success
+  [OK] prepare_report_data      success
+  [OK] prepare_attachment       success
+  [OK] render_email_draft       success
+  [OK] send_report_email        success
+  [OK] archive_and_verify       success
 耗时: 7.57s
 ========================================================================

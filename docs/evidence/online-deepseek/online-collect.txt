@@ -13,8 +13,8 @@
 调度参数: {"skill": "collect_data", "payload": {}, "conf": {}}
 
 DAG Run : manual__2026-11-01T11:12:36.347670+00:00
-最终状态: ✅ success
+最终状态: [OK] success
 任务状态:
-  ✅ route_execute            success
+  [OK] route_execute            success
 耗时: 4.93s
 ========================================================================

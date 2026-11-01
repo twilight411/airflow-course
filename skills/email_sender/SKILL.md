@@ -1,7 +1,7 @@
 ---
 name: email_sender
 version: 1.0.0
-modeled_on: https://skillfabri.com/  # SkillFabri：按 SKILL.md 建模、归类、建立技能关系
+modeled_on: https://skillfabri.com/  # 参考 SkillFabri 的 SKILL.md 格式和关系写法
 domain: Automation Scripting / Communication
 tags: [email, smtp, notification, report, html-template, retry]
 status: course-demo
@@ -21,7 +21,7 @@ relations:
 通过 SMTP 真实发送；在凭据缺失或显式配置下进入 DRY_RUN 模拟发送，
 并把每次发送结果追加到 `send_records.jsonl`，供下游归档与监控消费。
 
-## 2. 输入契约（Inputs）
+## 2. 输入字段（Inputs）
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `payload.report_date` | string | 否 | 报表日期，缺省取当前北京时间 |
@@ -33,7 +33,7 @@ relations:
 | `conf.subject` | string | 否 | 覆盖主题 |
 | `conf.text_body` / `conf.html_body` | string | 否 | 覆盖正文（LLM 生成内容入口） |
 
-## 3. 输出契约（Outputs）
+## 3. 输出结果（Outputs）
 ```json
 {
   "skill": "email_sender",
@@ -56,14 +56,14 @@ relations:
 - 收件人格式非法：`ValueError`，任务直接失败，不进入 SMTP 重试；
 - SMTP 连接 / 登录 / 发送失败：包装为 `EmailSkillError`，由 Airflow `retries`
   配合指数退避重试；失败记录写入 `send_records.jsonl`；
-- 凭据缺失：自动降级 DRY_RUN，不触达网络，保证演示链路不中断。
+- 凭据缺失：自动降级 DRY_RUN，不触达网络，避免演示中断。
 
 ## 5. 在 Airflow 中的挂载方式
 - 代码目录 `skills/email_sender/` 经 docker-compose 挂载到 `/opt/airflow/skills`；
 - DAG 中以 `PythonOperator` 调用 `run_email_task(payload, conf, run_id)`；
 - SMTP 主机、端口、账号、授权码、默认收件人由 `.env` 经容器环境变量注入。
 
-## 6. 与其他 Skill 的关系（SkillFabri 关系建模）
+## 6. 与其他 Skill 的关系
 - **Intersects data_collector**：消费其报表上下文；
 - **Intersects archiver**：产出发送记录供其归档与交付校验；
 - 可独立被 `llm_skill_dispatch` DAG 按名称路由调用。
